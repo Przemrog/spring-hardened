@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"/><title>Logowanie</title></head>
+<body>
+<h2>Logowanie</h2>
+<p th:if="${param.error}" style="color:#b00">Nieprawidlowy email lub haslo.</p>
+<form method="post" th:action="@{/login}">
+    <input name="username" placeholder="email" value="alice@local"/><br/>
+    <input name="password" type="password" placeholder="haslo" value="alice123"/><br/>
+    <button type="submit">Zaloguj</button>
+</form>
+<p style="color:#777">Konta testowe: admin@local/admin123, alice@local/alice123, bob@local/bob123</p>
+<a th:href="@{/register}">Rejestracja</a>
+</body>
+</html>
