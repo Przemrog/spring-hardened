@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"/><title th:text="${note.title}">Notatka</title></head>
+<body>
+<a th:href="@{/notes}">&larr; Notatki</a>
+<h2 th:text="${note.title}">tytul</h2>
+<p style="color:#777" th:text="'id=' + ${note.id} + ', owner=' + ${note.owner.id}"></p>
+<!-- [HARDENING A05] th:text - automatyczne kodowanie wyjscia; wstrzykniety skrypt nie zostanie wykonany -->
+<div th:text="${note.body}">tresc</div>
+<p>
+    <a th:href="@{'/notes/' + ${note.id} + '/edit'}">Edytuj</a>
+    <form method="post" th:action="@{'/notes/' + ${note.id} + '/delete'}" style="display:inline">
+        <button type="submit">Usun</button>
+    </form>
+</p>
+</body>
+</html>
