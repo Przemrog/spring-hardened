@@ -20,7 +20,7 @@ oznaczona jako `[HARDENING Axx]`.
 | A06/A07 rate limit | brak | własny `LoginRateLimitFilter` na `/login` i `/api/login` | `security/LoginRateLimitFilter.java` |
 | A07 polityka haseł | brak | min. 10 znaków, wielka litera, cyfra, znak specjalny (rejestracja) | `web/AuthController.java` |
 | A08 JWT            | brak walidacji issuer/audience, 24 h | walidacja issuer + audience, token 1 h | `security/JwtUtil.java` |
-| A08 upload         | oryginalna nazwa, brak walidacji | allowlist rozszerzeń, limit rozmiaru, nazwa UUID | `web/ProfileController.java` |
+| A08 upload         | oryginalna nazwa, brak walidacji | rozpoznawanie formatu na podstawie zawartości, limit rozmiaru i wymiarów, pełne dekodowanie oraz ponowne kodowanie do PNG, normalizacja rastra i losowa nazwa UUID | `web/ProfileController.java` |
 | A09 logowanie      | brak audytu | nasłuch zdarzeń Spring Security (`AuthEventLogger`) | `security/AuthEventLogger.java` |
 | CSRF               | **już włączony** (Spring domyślnie) | bez zmian — pozostaje włączony | `config/SecurityConfig.java` |
 | A03 zależności     | miejsce na pakiet z CVE | wersje wolne od podatności | `pom.xml` |

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig {
@@ -27,13 +28,24 @@ public class SecurityConfig {
         http
             .securityMatcher("/api/**")
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(sm -> sm
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/login").permitAll()
                 .anyRequest().authenticated())
-            // [HARDENING A06/A07] limit prob logowania rowniez dla API
-            .addFilterBefore(rateLimit, UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            // [HARDENING A07/A08]
+            // API zwraca 401 zamiast przekierowania do strony HTML.
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint(
+                    (request, response, exception) ->
+                        response.sendError(
+                            HttpServletResponse.SC_UNAUTHORIZED)))
+            .addFilterBefore(
+                rateLimit,
+                UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(
+                jwtFilter,
+                UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

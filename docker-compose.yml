@@ -30,5 +30,17 @@ services:
     ports:
       - "8080:8080"
 
+
+  ssrf-sink:
+    image: python:3.12-alpine
+    working_dir: /srv
+    volumes:
+      - ./ssrf-sink/ssrf_sink.py:/srv/ssrf_sink.py:ro
+    command:
+      - python
+      - /srv/ssrf_sink.py
+    expose:
+      - "9090"
+
 volumes:
   pgdata:

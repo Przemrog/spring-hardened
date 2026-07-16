@@ -1,9 +1,9 @@
 package com.example.notes.api;
 
-import com.example.notes.model.Note;
 import com.example.notes.repo.NoteRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,23 +13,53 @@ import java.util.List;
 public class NoteApiController {
 
     private final NoteRepository notes;
-    public NoteApiController(NoteRepository notes) { this.notes = notes; }
+
+    public NoteApiController(NoteRepository notes) {
+        this.notes = notes;
+    }
 
     private Long currentUserId() {
-        return Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName());
+        var authentication =
+                SecurityContextHolder.getContext()
+                        .getAuthentication();
+
+        if (authentication == null
+                || !authentication.isAuthenticated()) {
+            throw new IllegalStateException(
+                    "Brak uwierzytelnionego użytkownika.");
+        }
+
+        return Long.valueOf(authentication.getName());
     }
 
     @GetMapping
-    public List<Note> mine() {
-        return notes.findByOwnerId(currentUserId());
+    @Transactional(readOnly = true)
+    public List<NoteDto> mine() {
+        Long userId = currentUserId();
+
+        return notes.findByOwnerId(userId)
+                .stream()
+                .map(NoteDto::from)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Note> one(@PathVariable Long id) {
-        // [HARDENING A01] weryfikacja wlasciciela rowniez w warstwie API
+    @Transactional(readOnly = true)
+    public ResponseEntity<NoteDto> one(
+            @PathVariable Long id) {
+
+        Long userId = currentUserId();
+
+        // [HARDENING A01]
+        // Właściciel jest weryfikowany przed utworzeniem DTO.
         return notes.findById(id)
-                .filter(n -> n.getOwner().getId().equals(currentUserId()))
+                .filter(note ->
+                        note.getOwner()
+                                .getId()
+                                .equals(userId))
+                .map(NoteDto::from)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() ->
+                        ResponseEntity.notFound().build());
     }
 }

@@ -63,36 +63,13 @@
             <version>0.13.0</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>tools.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>3.2.0</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>11.0.23</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-websocket</artifactId>
-            <version>11.0.23</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
-            <scope>provided</scope>
-        </dependency>
 
         <!--  [HARDENING A03] commons-collections zaktualizowany do wersji wolnej od CVE-2015-6420;
              utwardzenie nie wymagalo nowych zaleznosci bezpieczenstwa poza wlasnym kodem limitera  -->
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>20040616</version>
+            <version>3.2.2</version>
         </dependency>
     </dependencies>
 

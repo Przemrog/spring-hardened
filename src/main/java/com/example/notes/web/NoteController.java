@@ -19,6 +19,16 @@ import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.Locale;
+
 @Controller
 public class NoteController {
 
@@ -100,31 +110,141 @@ public class NoteController {
         return "notes/index";
     }
 
+    
     @PostMapping("/notes/import")
-    public String importUrl(@RequestParam String url, Principal principal) throws Exception {
-        // [HARDENING A01/SSRF] tylko http(s) + odrzucenie adresow wewnetrznych/loopback/link-local
-        URI uri;
-        try { uri = URI.create(url); } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Niedozwolony URL.");
-        }
-        String scheme = uri.getScheme();
-        if (scheme == null || !(scheme.equals("http") || scheme.equals("https")) || uri.getHost() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Niedozwolony URL.");
-        }
-        for (InetAddress addr : InetAddress.getAllByName(uri.getHost())) {
-            if (addr.isLoopbackAddress() || addr.isSiteLocalAddress()
-                    || addr.isLinkLocalAddress() || addr.isAnyLocalAddress()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Zablokowano adres wewnetrzny (SSRF).");
-            }
-        }
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder(uri).build();
-        HttpResponse<String> resp = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Note n = new Note();
-        n.setOwner(current(principal));
-        n.setTitle("Import z " + uri.getHost());
-        n.setBody(resp.body());
-        notes.save(n);
-        return "redirect:/notes";
+    public String importUrl(
+        @RequestParam String url,
+        Principal principal) {
+
+    URI uri;
+
+    try {
+        uri = URI.create(url);
+    } catch (IllegalArgumentException ex) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Niedozwolony URL.");
     }
+
+    String scheme = uri.getScheme();
+
+    if (scheme == null) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Adres musi zawierać schemat HTTP lub HTTPS.");
+    }
+
+    scheme = scheme.toLowerCase(Locale.ROOT);
+
+    if (!scheme.equals("http")
+            && !scheme.equals("https")) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Dozwolone są wyłącznie adresy HTTP i HTTPS.");
+    }
+
+    String host = uri.getHost();
+
+    if (host == null || host.isBlank()) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Adres nie zawiera prawidłowej nazwy hosta.");
+    }
+
+    // Dane użytkownika w URI, np. user@example.com,
+    // nie są potrzebne w funkcji importu.
+    if (uri.getUserInfo() != null) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Adresy zawierające dane użytkownika są niedozwolone.");
+    }
+
+    InetAddress[] resolvedAddresses;
+
+    try {
+        resolvedAddresses =
+                InetAddress.getAllByName(host);
+    } catch (UnknownHostException ex) {
+        /*
+         * [HARDENING A01/SSRF]
+         * Błąd DNS jest błędem wejścia użytkownika, a nie
+         * nieobsłużonym błędem aplikacji.
+         */
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Nie udało się rozwiązać nazwy hosta.");
+    }
+
+    for (InetAddress address : resolvedAddresses) {
+        if (isForbiddenAddress(address)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Zablokowano adres wewnętrzny.");
+        }
+    }
+
+    HttpClient client = HttpClient.newBuilder()
+            // Jawny zakaz przekierowań blokuje scenariusz:
+            // publiczny URL -> przekierowanie do sieci lokalnej.
+            .followRedirects(
+                    HttpClient.Redirect.NEVER)
+            .connectTimeout(
+                    Duration.ofSeconds(5))
+            .build();
+
+    HttpRequest request = HttpRequest.newBuilder(uri)
+            .timeout(Duration.ofSeconds(10))
+            .GET()
+            .build();
+
+    HttpResponse<String> response;
+
+    try {
+        response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString());
+    } catch (InterruptedException ex) {
+        Thread.currentThread().interrupt();
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_GATEWAY,
+                "Przerwano pobieranie zasobu.");
+    } catch (IOException ex) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_GATEWAY,
+                "Nie udało się pobrać wskazanego zasobu.");
+    }
+
+    /*
+     * Opcjonalne, ale rozsądne ograniczenie:
+     * nie zapisujemy stron błędu jako poprawnego importu.
+     */
+    if (response.statusCode() < 200
+            || response.statusCode() >= 300) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_GATEWAY,
+                "Zdalny serwer zwrócił błąd.");
+    }
+
+    Note note = new Note();
+    note.setOwner(current(principal));
+    note.setTitle("Import z " + host);
+    note.setBody(response.body());
+
+    notes.save(note);
+
+    return "redirect:/notes";
+}
+
+private boolean isForbiddenAddress(
+        InetAddress address) {
+
+    return address.isAnyLocalAddress()
+            || address.isLoopbackAddress()
+            || address.isLinkLocalAddress()
+            || address.isSiteLocalAddress()
+            || address.isMulticastAddress();
+}
 }
