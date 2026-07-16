@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"/><title>Edycja</title></head>
+<body>
+<h2>Edycja notatki</h2>
+<form method="post" th:action="@{'/notes/' + ${note.id} + '/edit'}">
+    <input name="title" th:value="${note.title}"/><br/>
+    <textarea name="body" rows="6" th:text="${note.body}"></textarea><br/>
+    <button type="submit">Zapisz</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"/><title>Profil</title></head>
+<body>
+<a th:href="@{/notes}">&larr; Notatki</a>
+<h2>Profil</h2>
+<p th:text="'Email: ' + ${user.email}"></p>
+<img th:if="${user.avatarPath}" th:src="${user.avatarPath}" width="120"/>
+<form method="post" th:action="@{/profile}" enctype="multipart/form-data">
+    <input type="file" name="avatar"/><br/>
+    <button type="submit">Wgraj awatar</button>
+</form>
+</body>
+</html>

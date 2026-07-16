@@ -1,0 +1,55 @@
+﻿web-1  | 2026-07-16T10:41:29.216Z  WARN 1 --- [io-8080-exec-10] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+web-1  | 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+web-1  | 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+web-1  | 	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$2(FilterChainProxy.java:235) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:376) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:181) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:245) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:239) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at com.example.notes.security.LoginRateLimitFilter.doFilterInternal(LoginRateLimitFilter.java:44) ~[!/:1.0.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:110) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:96) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:118) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:385) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:237) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:195) ~[spring-security-web-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:317) ~[spring-security-config-7.1.0.jar!/:7.1.0]
+web-1  | 	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.22.jar!/:na]
+web-1  | 2026-07-16T10:41:33.601Z  WARN 1 --- [nio-8080-exec-5] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.735Z  WARN 1 --- [io-8080-exec-10] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.786Z  WARN 1 --- [nio-8080-exec-4] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.786Z  WARN 1 --- [nio-8080-exec-4] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.793Z  WARN 1 --- [nio-8080-exec-5] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.794Z  WARN 1 --- [nio-8080-exec-5] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.816Z  WARN 1 --- [nio-8080-exec-7] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.817Z  WARN 1 --- [nio-8080-exec-7] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.823Z  WARN 1 --- [nio-8080-exec-9] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:33.823Z  WARN 1 --- [nio-8080-exec-9] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:34.059Z  WARN 1 --- [nio-8080-exec-7] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
+web-1  | 2026-07-16T10:41:34.274Z  WARN 1 --- [nio-8080-exec-4] c.e.notes.security.AuthEventLogger       : Nieudane uwierzytelnienie dla 'ratelimit_4d9c6e93b2@local': Bad credentials
+web-1  | 2026-07-16T10:41:34.375Z  WARN 1 --- [nio-8080-exec-6] c.e.notes.security.AuthEventLogger       : Nieudane uwierzytelnienie dla 'ratelimit_4d9c6e93b2@local': Bad credentials
+web-1  | 2026-07-16T10:41:34.488Z  WARN 1 --- [io-8080-exec-10] c.e.notes.security.AuthEventLogger       : Odmowa dostepu do zasobu chronionego.
